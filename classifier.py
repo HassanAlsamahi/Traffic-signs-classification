@@ -32,28 +32,24 @@ def image_loader(image_name):
     """load image, returns cuda tensor"""
     image = Image.open(image_name)
     image = loader(image).float()
-    image = Variable(image, requires_grad=False)
-    image = image.unsqueeze(0)  #this is for VGG, may not be needed for ResNet
-    return image  #assumes that you're using GPU
+    image = Variable(image, requires_grad=True)
+    image = image.unsqueeze(0)
+    return image
 imagepath =args.image
 image = image_loader(imagepath)
-#img = Image.open("traffic-sign.jpg").convert("RGB")
-#print(img.shape)
 img = mpimg.imread(imagepath)
-#img = img.resize((20,20))
-#image = datasets.ImageFolder("traffic-sign.jpg",transform=transforms)
-#image = imgtensor.unsqueeze_(0)
+
 model = network.Network()
 model_loaded = args.model
 model.load_state_dict(torch.load(model_loaded))
+
 output = model(image)
 _,preds_tensor = torch.max(output,1)
 pred = np.squeeze(preds_tensor.cpu().numpy())
-image = image.data.cpu().numpy()
-#image.show()
 plt.imshow(img)
-
-#figure = plt.figure(figsize = (20,20))
+plt.title(dataset.classes[pred])
+#figure = plt.figure(figsize = (4,5))
+#ax = figure.add
 print(dataset.classes[pred])
 print(pred)
 plt.show()
