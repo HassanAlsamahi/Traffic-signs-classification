@@ -19,7 +19,7 @@ model = network.Network()
 model_loaded = args.model
 model.load_state_dict(torch.load(model_loaded,map_location=torch.device('cpu')))
 
-train_loader,valid_loader,test_loader = dataset.loader(batch_size=64,args.dataset)
+train_loader,valid_loader,test_loader = dataset.loader(batch_size=64)
 
 ############ Cost function #############
 criterion = nn.CrossEntropyLoss()

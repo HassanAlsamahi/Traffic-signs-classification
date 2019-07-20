@@ -19,7 +19,7 @@ parser.add_argument("-ep","--epochs", type=int, default=20, metavar='N',help='Nu
 parser.add_argument("--lr", type=float, default = 0.03,metavar='N',help='Learning rate')
 parser.add_argument("-b","--batch_size", type=int, default=64, metavar='N', help='Batch Size(default=64)')
 parser.add_argument("--model", type=str, help=("Train a pretrained model"))
-
+parser.add_argument("--save",type=str,default= "new_model.pt",help="Name the model to save")
 args = parser.parse_args()
 batch_size = args.batch_size
 train_loader,valid_loader,test_loader = main.loader(batch_size)
@@ -30,7 +30,10 @@ model = network.Network()
 if args.model is not None:
     model_loaded = args.model
     model.load_state_dict(torch.load(args.model,map_location=torch.device('cpu')))
-    print('Model Loaded is ',model_loaded)
+    model_saved = model
+    print('Model Loaded is ',model_saved)
+else:
+    model_saved  = args.save
 
 if gpu_available:
     model = model.cuda()
@@ -89,7 +92,7 @@ def train():
       Epochs.append(epoch)
 
       if valid_loss < valid_loss_min:
-        torch.save(model.state_dict(), 'traffic_model_5.pt')
+        torch.save(model.state_dict(), model_saved)
         print("Valid Loss min {:.6f} >>> {:.6f}".format(valid_loss_min, valid_loss))
         print("Model saved")
         valid_loss_min = valid_loss
