@@ -7,8 +7,8 @@ import argparse
 
 gpu_available = torch.cuda.is_available()
 parser = argparse.ArgumentParser(description='Testing the classifier')
-parser.add_argument("--model",type=str, default='traffic_model_2.pt',help='Model to test (defaul = traffic_model_2.pt)')
-
+parser.add_argument("--model",type=str, required=True, help='Model to test')
+parser.add_argument("--batch_size", type=int, default=64, help='Batch size of testing')
 args = parser.parse_args()
 
 def imshow(img):
@@ -19,7 +19,8 @@ model = network.Network()
 model_loaded = args.model
 model.load_state_dict(torch.load(model_loaded,map_location=torch.device('cpu')))
 
-train_loader,valid_loader,test_loader = dataset.loader(batch_size=64)
+batch_size = args.batch_size
+train_loader,valid_loader,test_loader = dataset.loader(batch_size)
 
 ############ Cost function #############
 criterion = nn.CrossEntropyLoss()

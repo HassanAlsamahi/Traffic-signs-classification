@@ -29,13 +29,10 @@ Testing_path = "Dataset/Testing"
 training_dataset = datasets.ImageFolder(Training_path,transform=transforms)
 testing_dataset = datasets.ImageFolder(Testing_path,transform=transforms)
 classes = sorted(os.listdir(Training_path))
-#print(len(classes))
+
 
 ##################### Loading the data ##########################
 valid_size = 0.2
-#test_size = 0.5
-#global batch_size
-#batch_size = 0
 num_workers = 0
 
 
@@ -48,9 +45,7 @@ train_idx,valid_idx =train_indices[valid_split:], train_indices[:valid_split]
 num_test = len(testing_dataset)
 test_indices = list(range(num_test))
 np.random.shuffle(test_indices)
-#test_split = int(np.floor(test_size * len(valid_indices)))
 test_idx = test_indices
-#print(len(valid_idx))
 
 train_sampler = SubsetRandomSampler(train_idx)
 valid_sampler = SubsetRandomSampler(valid_idx)
